@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ftps
+    labels:
+        tier: ftps
+spec:
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: ft_services
+            tier: ftps
+    template:
+        metadata:
+            labels:
+                app: ft_services
+                tier: ftps
+        spec:
+            restartPolicy: Always
+            containers:
+                -   name: ftps
+                    imagePullPolicy: Never
+                    image: my-ftps
+                    env:
+                        -   name: PASV_ADDRESS
+                            valueFrom:
+                                secretKeyRef:
+                                    name: ip-secret
+                                    key: ip
+                        -   name: FTP_USER
+                            value: admin
+                        -   name: FTP_PASS
+                            value: admin
+                    ports:
+                        -   name: ftps
+                            containerPort: 21
+                            hostPort: 21
+                        -   name: ftps-send
+                            containerPort: 21100
+                            hostPort: 21100
+                    volumeMounts:
+                        -   name:  secret-volume
+                            mountPath: /etc/ssl/certs/tls.crt
+                            subPath: tls.crt
+                        -   name:  secret-volume
+                            mountPath: /etc/ssl/certs/tls.key
+                            subPath: tls.key
+            volumes:
+                -   name: secret-volume
+                    secret:
+                        secretName: my-secret
+                -   name: ip-secret
+                    secret:
+                        secretName: ip-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: ftps
+    labels:
+        tier: ftps
+spec:
+    type: LoadBalancer
+    selector:
+        app: ft_services
+        tier: ftps
+    ports:
+        -   targetPort: 21
+            port: 21
+            name: ftps
+        -   targetPort: 21100
+            port: 21100
+            name: ftps-send

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FT SERVICES</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e0e5ec;
+        }
+        .container {
+           margin-top: 50px;
+        }
+        .neu {
+            width: 150px;
+            height: 150px;
+            background-color: #e0e5ec;
+            border-radius: 50%;
+            box-shadow: #a3b1c6 inset 6px 6px 20px,#ffffff inset -6px -6px 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .service {
+            width: 150px;
+            height: 150px;
+            background-color: #e0e5ec;
+            border-radius: 50%;
+            box-shadow: #a3b1c6 6px 6px 20px,#ffffff -6px -6px 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .service:hover{
+            box-shadow: #e2651d 6px 6px 20px,#f79b66 -6px -6px 20px;
+        }
+        .active:hover{
+            box-shadow: #30c956 6px 6px 20px,#53f73d -6px -6px 20px;
+        }
+        .service {
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            display: block;
+        }
+        .responsive {
+            width: 70%;
+            display: block;
+            margin: 0 auto;
+        }
+        .school {
+            position: absolute;
+            top: 0;
+            right: 20%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="school">
+            <img class="responsive" style="margin-top: 20px;width: 30%;" src="imgs/1337.jpg">
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class="neu service">
+                <img class="responsive" style="margin-top: 20px;width: 100%;" src="imgs/mysql.png">
+            </div>
+        </div>
+        <div class="d-flex mb-3 justify-content-around">
+            <a href="phpmyadmin" class="neu service active">
+                <img class="responsive" style="margin-top: 50px;" src="imgs/phpmyadmin.svg">
+            </a>
+            <a href="wordpress" class="neu service active">
+                <img class="responsive" style="margin-top: 30px;" src="imgs/wordpress.png">
+            </a>
+        </div>
+        <div class="d-flex mb-3 justify-content-around">
+            <div class="neu service">
+                <img class="responsive" style="margin-top: 30px;" src="imgs/ftps.png">
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <div class="neu">
+                    <img class="responsive" style="margin-top: 25px;" src="imgs/kuberentes.png">
+                </div>
+                <div class="neu">
+                    <img class="responsive" style="margin-top: 25px;" src="imgs/docker.png">
+                </div>
+            </div>
+            <div class="neu service">
+                <img class="responsive" style="margin-top: 30px;" src="imgs/ssh.png">
+            </div>
+        </div>
+        <div class="d-flex justify-content-around">
+            <a href="grafana" class="neu service active">
+                <img class="responsive" style="margin-top: 30px;" src="imgs/grafana.png">
+            </a>
+            <div class="neu service">
+                <img class="responsive" style="margin-top: 25px;" src="imgs/influxdb.png">
+            </div>
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class="neu service">
+                <img class="responsive" style="margin-top: 20px;" src="imgs/nginx.png">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

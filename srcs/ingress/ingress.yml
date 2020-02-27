@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: my-ingress
+spec:
+  tls:
+    - secretName: my-secret
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: 80

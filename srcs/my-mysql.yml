@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mysql
+    labels:
+        tier: mysql
+spec:
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: ft_services
+            tier: mysql
+    template:
+        metadata:
+            labels:
+                app: ft_services
+                tier: mysql
+        spec:
+            restartPolicy: Always
+            containers:
+                -   name: mysql
+                    image: mysql-image
+                    imagePullPolicy: Never
+                    env:
+                        -   name: MYSQL_ROOT_PASSWORD
+                            valueFrom:
+                                secretKeyRef:
+                                    name: mysql-secret
+                                    key: password
+                    ports:
+                    -   containerPort: 3306
+                    volumeMounts:
+                        -   name:  mysql-storage
+                            mountPath: /app
+            volumes:
+                -   name: mysql-storage
+                    persistentVolumeClaim:
+                        claimName: mysql-pvc
+                -   name: ip-secret
+                    secret:
+                        secretName: ip-secret
+                -   name: mysql-secret
+                    secret:
+                        secretName: mysql-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: mysql
+    labels:
+        tier: mysql
+spec:
+    selector:
+        app: ft_services
+        tier: mysql
+    ports:
+        -   port: 3306
+            targetPort: 3306
+    clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: mysql-pv
+spec:
+    storageClassName: local
+    capacity:
+        storage: 1Gi
+    accessModes:
+        - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    hostPath:
+        path: "/mnt/base/mysql"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: mysql-pvc
+spec:
+    accessModes:
+        - ReadWriteMany
+    storageClassName: local
+    resources:
+        requests:
+            storage: 1Gi

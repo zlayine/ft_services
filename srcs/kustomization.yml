@@ -1,0 +1,19 @@
+secretGenerator:
+    -   name: mysql-secret
+        literals:
+            -   password=abc123
+    -   name: my-secret
+        files:
+            -   tls-keys/tls.crt
+            -   tls-keys/tls.key
+        type: "kubernetes.io/tls"
+resources:
+    -   my-mysql.yml
+    -   my-admin.yml
+    -   my-wp.yml
+    -   my-nginx.yml
+    -   my-ftps.yml
+    -   my-grafana.yml
+    -   my-influx.yml
+    -   my-telegraf.yml
+    -   ingress/ingress.yml

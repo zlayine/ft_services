@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nginx
+    labels:
+        tier: nginx
+spec:
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: ft_services
+            tier: nginx
+    template:
+        metadata:
+            labels:
+                app: ft_services
+                tier: nginx
+        spec:
+            restartPolicy: Always
+            containers:
+                -   name: nginx
+                    imagePullPolicy: Never
+                    image: my-nginx
+                    volumeMounts:
+                        -   name:  secret-volume
+                            mountPath: /etc/nginx/ssl/tls.crt
+                            subPath: tls.crt
+                        -   name:  secret-volume
+                            mountPath: /etc/nginx/ssl/tls.key
+                            subPath: tls.key
+                    ports:
+                        -   name: myssh
+                            containerPort: 22
+                            hostPort: 2000
+            volumes:
+            -   name: secret-volume
+                secret:
+                    secretName: my-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: nginx
+    labels:
+        tier: nginx
+spec:
+    type: LoadBalancer
+    selector:
+        app: ft_services
+        tier: nginx
+    ports:
+        -   targetPort: 80
+            port: 80
+            name: http
+            protocol: TCP
+        -   targetPort: 443
+            port: 443
+            name: https
+            protocol: TCP
+        -   targetPort: 22
+            port: 2000
+            name: ssh
+            protocol: TCP
